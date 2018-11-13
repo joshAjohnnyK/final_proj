@@ -4,7 +4,7 @@ int potPin = A8;
 int potVal = 0;
 int lastPotVal = 0;
 int ccVal = 0;
-int ccNumber = 2;
+int ccNumber = 1;
 
 boolean lastButtonState;
 boolean buttonState;
