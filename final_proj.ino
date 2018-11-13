@@ -1,5 +1,6 @@
 int buttonPin = 1;
 int potPin = A8;
+//
 
 int potVal = 0;
 int lastPotVal = 0;
