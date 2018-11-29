@@ -12,11 +12,24 @@ boolean lastButtonStateArray[4] = {LOW, LOW, LOW, LOW};
 boolean buttonStateArray[4] = {LOW, LOW, LOW, LOW};
 unsigned long lastButtonStateChange;
 
+#include <Audio.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <SD.h>
+#include <SerialFlash.h>
+
+// GUItool: begin automatically generated code
+AudioInputAnalog         adc1;           //xy=161,80
+AudioOutputAnalog        dac1;           //xy=329,47
+AudioConnection          patchCord1(adc1, dac1);
+// GUItool: end automatically generated code
+
 void setup() {
   for (int i = 0; i < 4; i++) {
     pinMode(buttonPin[i], INPUT);
   }
   Serial.begin(9600);
+  AudioMemory(12);
 
 }
 
