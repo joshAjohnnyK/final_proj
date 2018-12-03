@@ -12,23 +12,6 @@ boolean lastButtonStateArray[4] = {LOW, LOW, LOW, LOW};
 boolean buttonStateArray[4] = {LOW, LOW, LOW, LOW};
 unsigned long lastButtonStateChange;
 
-//#include <Audio.h>
-//#include <Wire.h>
-//#include <SPI.h>
-//#include <SD.h>
-//#include <SerialFlash.h>
-//
-//// GUItool: begin automatically generated code
-//AudioInputAnalog         adc1;           //xy=70,117
-//AudioEffectBitcrusher    bitcrusher1;    //xy=227,98
-//AudioFilterStateVariable filter1;        //xy=406,119
-//AudioFilterStateVariable filter2;        //xy=563,137
-//AudioOutputAnalog        dac1;           //xy=694,261
-//AudioConnection          patchCord1(adc1, bitcrusher1);
-//AudioConnection          patchCord2(bitcrusher1, 0, filter1, 0);
-//AudioConnection          patchCord3(filter1, 0, filter2, 0);
-//AudioConnection          patchCord4(filter2, 2, dac1, 0);
-//// GUItool: end automatically generated code
 
 #include <Audio.h>
 #include <Wire.h>
@@ -53,9 +36,6 @@ AudioConnection          patchCord5(fade1, dac1);
 
 
 
-
-
-
 void setup() {
   for (int i = 0; i < 4; i++) {
     pinMode(buttonPin[i], INPUT);
@@ -74,53 +54,57 @@ void loop() {
 
 }
 
-//void buttonsWork() {
-//  for (int i = 0; i < 4; i++) {
-//
-//    if (digitalRead(buttonPin[i]) == HIGH) {
-//      effectOn(i);
-//    }
-//
-//
-//    if (millis() > lastButtonStateChange + 50) {
-//      lastButtonStateArray[i] = buttonStateArray[i];
-//      buttonStateArray[i] = digitalRead(buttonPin[i]);
-//
-//      if (buttonStateArray[i] == LOW  && lastButtonStateArray[i] == HIGH) {
-//        lastButtonStateChange = millis();
-//        //turn something off
-//        effectOff(i);
-//        Serial.println("turn off");
-//
-//      }
-//    }
-//
-//  }
-//}
-//
-//void  effectOn(int ccNum) {
-//
-//  Serial.println(ccNum);
-//
-//  lastPotVal[ccNum] = potVal[ccNum];
-//  potVal[ccNum] = analogRead(potPin[ccNum]);
-//  if (potVal[ccNum] != lastPotVal[ccNum] && millis() > lastCCTime[ccNum] || 0) {
-//    lastCCTime[ccNum] = millis();
-//    ccVal[ccNum] = map(potVal[ccNum], 0, 1023, 0, 127);
-//    usbMIDI.sendControlChange(ccNumber[ccNum], ccVal[ccNum], 1);
-//    Serial.print(ccNum);
-//    Serial.print(", ");
-//    Serial.println(ccVal[ccNum]);
-//  }
-//}
-//
-//
-//
-//void  effectOff(int ccNum) {
-//
-//  usbMIDI.sendControlChange(ccNumber[ccNum], 0, 1);
-//      Serial.println(ccVal[ccNum]);
-//}
+void buttonsWork() {
+  for (int i = 0; i < 4; i++) {
+
+    if (digitalRead(buttonPin[i]) == HIGH) {
+      effectOn(i);
+    }
+
+
+    if (millis() > lastButtonStateChange + 50) {
+      lastButtonStateArray[i] = buttonStateArray[i];
+      buttonStateArray[i] = digitalRead(buttonPin[i]);
+
+      if (buttonStateArray[i] == LOW  && lastButtonStateArray[i] == HIGH) {
+        lastButtonStateChange = millis();
+        //turn something off
+        effectOff(i);
+        Serial.println("turn off");
+
+      }
+    }
+
+  }
+}
+
+void  effectOn(int ccNum) {
+
+  Serial.println(ccNum);
+
+  lastPotVal[ccNum] = potVal[ccNum];
+  potVal[ccNum] = analogRead(potPin[ccNum]);
+  if (potVal[ccNum] != lastPotVal[ccNum] && millis() > lastCCTime[ccNum] || 0) {
+    lastCCTime[ccNum] = millis();
+    ccVal[ccNum] = map(potVal[ccNum], 0, 1023, 0, 127);
+    usbMIDI.sendControlChange(ccNumber[ccNum], ccVal[ccNum], 1);
+    Serial.print(ccNum);
+    Serial.print(", ");
+    Serial.println(ccVal[ccNum]);
+  }
+}
+
+
+
+void  effectOff(int ccNum) {
+
+  usbMIDI.sendControlChange(ccNumber[ccNum], 0, 1);
+      Serial.println(ccVal[ccNum]);
+}
+
+
+
+
 
 
 
@@ -164,10 +148,12 @@ void button3Audio() {
 }
 
 
-//void button4Audio() {
-//
-//  while (digitalRead(buttonPin[2]) == HIGH) {
-//    fade1.fadeOut(500);
-//    fade1.fadeIn(500);
-//  }
-//}
+void button4Audio() {
+
+  if (digitalRead(buttonPin[3]) == HIGH) {
+    fade1.fadeOut(500);
+  }
+  else {
+    fade1.fadeIn(100);
+  }
+}
